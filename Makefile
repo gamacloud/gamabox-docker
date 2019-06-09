@@ -2,27 +2,26 @@
 
 # Current apache hadoop releases: http://hadoop.apache.org/releases.html
 
-HADOOP_26_VERSION = 2.6.5
-HADOOP_27_VERSION = 2.7.3
+HADOOP_VERSION = 2.9.0
 PROTOBUF_VERSION = 2.5.0
 
 DOCKER = docker
-DOCKER_REPO = danisla/hadoop
+DOCKER_REPO = muhammadmuhlas/gamabox-hadoop
 
 all: build
 
-### Build hadoop 2.6 and 2.7 images with native libs.
-build: build-$(HADOOP_26_VERSION) build-$(HADOOP_27_VERSION)
+### Build hadoop images with native libs.
+build: build-$(HADOOP_VERSION)
 build-%: hadoop-native-%.tar
 	$(DOCKER) build -t hadoop:$* \
 	--build-arg HADOOP_VERSION=$* \
 	.
 
-tag: tag-$(HADOOP_26_VERSION) tag-$(HADOOP_27_VERSION)
+tag: tag-$(HADOOP_VERSION)
 tag-%:
 	$(DOCKER) tag hadoop:$* $(DOCKER_REPO):$*
 
-push: push-$(HADOOP_26_VERSION) push-$(HADOOP_27_VERSION)
+push: push-$(HADOOP_VERSION)
 push-%:
 	$(DOCKER) push $(DOCKER_REPO):$*
 
